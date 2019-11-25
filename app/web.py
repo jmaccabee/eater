@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import requests
 
 from app import utils, parse
@@ -21,9 +22,19 @@ def get_eater_nyc_restaurants():
         'accept-language': 'en-US,en;q=0.9',
     }
 
+    target_url = 'https://ny.eater.com/maps/best-new-york-restaurants-38-map'
     response = requests.get(
-        'https://ny.eater.com/maps/best-new-york-restaurants-38-map', 
-        headers=headers
+        target_url, 
+        headers=headers,
     )
 
-    return parse.parse_eater_restaurants()
+    dom = utils.get_dom_from_response_content(
+        response.content
+    )
+
+    map_path = urlparse(target_url).path.split('/')[1]
+
+    return parse.parse_eater_restaurants(
+        dom,
+        map_path,
+    )
