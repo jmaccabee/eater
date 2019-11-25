@@ -5,7 +5,7 @@ from app import utils, parse
 
 
 def get_eater_nyc_restaurants():
-    # curl converted to Python code
+    # browser request converted from cURL to Python code
     # using https://curl.trillworks.com/
     headers = {
         'authority': 'ny.eater.com',
@@ -22,16 +22,19 @@ def get_eater_nyc_restaurants():
         'accept-language': 'en-US,en;q=0.9',
     }
 
+    # execute the request
     target_url = 'https://ny.eater.com/maps/best-new-york-restaurants-38-map'
     response = requests.get(
         target_url, 
         headers=headers,
     )
 
+    # extract the dom from the response
     dom = utils.get_dom_from_response_content(
         response.content
     )
 
+    # so we know which URL was requested
     map_path = urlparse(target_url).path.split('/')[1]
 
     return parse.parse_eater_restaurants(
