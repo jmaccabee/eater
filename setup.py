@@ -50,7 +50,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         'console_scripts': [
-            'scrape=scrape:main',
+            'scrape_eater_nyc=bin:scrape_eater_nyc',
         ],
     },
 )

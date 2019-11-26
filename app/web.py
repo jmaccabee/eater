@@ -35,9 +35,9 @@ def get_eater_nyc_restaurants():
     )
 
     # so we know which URL was requested
-    map_path = urlparse(target_url).path.split('/')[1]
+    requested_url_path = urlparse(target_url).path
 
     return parse.parse_eater_restaurants(
         dom,
-        map_path,
+        requested_url_path,
     )
