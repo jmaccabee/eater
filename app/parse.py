@@ -15,7 +15,7 @@ def parse_eater_restaurants(dom, requested_url_path):
     # unpack the parsed linked data so we can 
     # add parsed restaurant data not found 
     # in the <script> tag
-    date_published = linked_data['date_published']
+    last_update_date = linked_data['last_update_date']
     parsed_restaurants_from_json = linked_data['parsed_restaurants']
 
     # then parse additional restaurant details from the HTML content
@@ -28,7 +28,7 @@ def parse_eater_restaurants(dom, requested_url_path):
         parsed_restaurants.append(restaurant)
 
     return {
-        'date_published': date_published,
+        'last_update_date': last_update_date,
         'parsed_restaurants': parsed_restaurants,
     }
 
@@ -43,9 +43,9 @@ def parse_eater_restaurant_linked_json_data(dom, requested_url_path):
     # next, convert the linked data text into a JSON object
     restaurant_data = json.loads(restaurant_json)
     
-    # we can use the "date modified" field to know when a new article
-    # is published
-    date_published = parse(restaurant_data['dateModified'])
+    # we can use the "date modified" field to know when the article
+    # was last updated
+    last_update_date = parse(restaurant_data['dateModified'])
 
     # we can also parse information on the restaurants on the list
     # from the linked data, though it won't include everything we want
@@ -76,7 +76,7 @@ def parse_eater_restaurant_linked_json_data(dom, requested_url_path):
     # with an implicit value at each position,
     # even if we're going to immediately unpack the values
     return {
-        'date_published': date_published,
+        'last_update_date': last_update_date,
         'parsed_restaurants': parsed_restaurants,
     }
 
