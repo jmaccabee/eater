@@ -116,11 +116,14 @@ def parse_eater_restaurant_card_html(dom):
         )
 
         restaurant_description = utils.clean_xpath_parsed_text(
-            restaurant.xpath('.//p//text()')
+            restaurant.xpath(
+                './/div[contains(@class, "entry-content")]//p//text()'
+            )
         )
 
         google_maps_url = utils.clean_xpath_parsed_text(
-            restaurant.xpath('.//ul[contains(@class, "mapstack")]//a/@href')
+            restaurant.xpath('.//ul[contains(@class, "mapstack")]' 
+                             '//a[contains(text(), "Google Maps")]/@href')
         )
 
         other_featured_lists = utils.clean_xpath_parsed_text(
