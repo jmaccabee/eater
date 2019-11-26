@@ -108,7 +108,7 @@ def parse_eater_restaurant_card_html(dom):
         )
 
         phone_number = utils.clean_xpath_parsed_text(
-            restaurant.xpath('.//div[contains(@class, "phone")]//a/@href')
+            restaurant.xpath('.//div[contains(@class, "phone")]/div/a/@href')
         ).replace('tel:', '')
 
         website_url = utils.clean_xpath_parsed_text(
@@ -136,6 +136,7 @@ def parse_eater_restaurant_card_html(dom):
         # with it's corresponding one in the linked data
         parsed_restaurants[data_slug] = {
             'data_slug': data_slug,
+            # potentially useful to include for debugging.
             'html_name': name,
             'address': address,
             'phone_number': phone_number,
