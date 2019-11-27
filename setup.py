@@ -43,7 +43,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         'console_scripts': [
-            'scrape_eater_nyc=bin:scrape_eater_nyc',
+            'email_eater_nyc_list_if_new=bin:email_eater_nyc_list_if_new',
         ],
     },
 )
