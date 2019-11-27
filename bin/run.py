@@ -1,29 +1,11 @@
 import datetime
 import argparse
 
-from app import mailer, web
+from app import mailer, utils, web
 from app.logger import eater_logger
 
 
-def email_eater_nyc_list_if_new():
-    # configure expected command line arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--recipient_emails", 
-        help=(
-            "Who should be emailed when a new restaurant list is published? "
-            "To include multiple emails, separate with a comma and no space"
-        ),
-        required=True
-    )
-    parser.add_argument(
-        "--force", 
-        help="Send an email even if the Eater restaurant list isn't new.",
-        action='store_true',
-        default=False,
-    )
-    args = parser.parse_args()
-    force = args.force
+def email_eater_nyc_list_if_new(recipient_emails, force):
     if force:
         eater_logger.info('Forcing run.')
 
@@ -43,15 +25,13 @@ def email_eater_nyc_list_if_new():
     eater_logger.info('Success: New NYC restaurants found!')
     restaurants = eater_nyc_restaurants_meta['parsed_restaurants']
     
-    to = args.recipient_emails
-
     # format eater restaurants to plaintext to 
     # include in our email
     restaurant_text = utils.format_restaurants_for_email(
         restaurants
     )
     mailer.send_email(
-        to=to,
+        to=recipient_emails,
         subject_line='New Eater NYC restaurant list!',
         body=restaurant_text,
     )
@@ -61,8 +41,27 @@ def email_eater_nyc_list_if_new():
 
 
 if __name__ == '__main__':
+    # configure expected command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--recipient_emails", 
+        help=(
+            "Who should be emailed when a new restaurant list is published? "
+            "To include multiple emails, separate with a comma and no space"
+        ),
+        required=True
+    )
+    parser.add_argument(
+        "--force", 
+        help="Send an email even if the Eater restaurant list isn't new.",
+        action='store_true',
+        default=False,
+    )
+    args = parser.parse_args()
+    recipient_emails = args.recipient_emails
+    force = args.force
     try:
-        email_eater_nyc_list_if_new()
+        email_eater_nyc_list_if_new(recipient_emails, force)
     # catch all exceptions and log
     except Exception as e:
         eater_logger.error('Error: run failed.', exc_info=True)

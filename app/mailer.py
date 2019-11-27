@@ -32,7 +32,6 @@ def send_email(
     msg_body.attach(textpart)
     msg.attach(msg_body)
 
-    import pdb; pdb.set_trace()
     ses_client.send_raw_email(
         Source=from_email,
         Destinations=to if multiple_emails else [to],
