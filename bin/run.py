@@ -12,7 +12,7 @@ def email_eater_nyc_list_if_new():
     eater_nyc_restaurants_meta = web.get_eater_nyc_restaurants()
     last_update_date = eater_nyc_restaurants_meta['last_update_date'].date()
 
-    if the article wasn't published today, don't do anything
+    # if the article wasn't published today, don't do anything
     if last_update_date != today_date:
         # log run information
         eater_logger.info('Success: No new NYC restaurants')
