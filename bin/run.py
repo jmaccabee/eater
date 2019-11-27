@@ -59,6 +59,8 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
     recipient_emails = args.recipient_emails
+    if ',' in recipient_emails:
+        recipient_emails = recipient_emails.split(',')
     force = args.force
     try:
         email_eater_nyc_list_if_new(recipient_emails, force)
