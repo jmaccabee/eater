@@ -6,22 +6,6 @@ from app.logger import eater_logger
 
 
 def email_eater_nyc_list_if_new():
-    today_date = datetime.datetime.today().date()
-
-    # run the scraper and check when the Eater list content was last updated
-    eater_nyc_restaurants_meta = web.get_eater_nyc_restaurants()
-    last_update_date = eater_nyc_restaurants_meta['last_update_date'].date()
-
-    # if the article wasn't published today, don't do anything
-    if last_update_date != today_date:
-        # log run information
-        eater_logger.info('Success: No new NYC restaurants')
-        return 
-
-    # log that we found a new list in case email sending fails
-    eater_logger.info('Success: New NYC restaurants found!')
-    restaurants = eater_nyc_restaurants_meta['parsed_restaurants']
-    
     # configure expected command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -32,9 +16,34 @@ def email_eater_nyc_list_if_new():
         ),
         required=True
     )
+    parser.add_argument(
+        "--force", 
+        help="Send an email even if the Eater restaurant list isn't new.",
+        action='store_true',
+        default=False,
+    )
     args = parser.parse_args()
+    force = args.force
+    if force:
+        eater_logger.info('Forcing run.')
+
+    today_date = datetime.datetime.today().date()
+
+    # run the scraper and check when the Eater list content was last updated
+    eater_nyc_restaurants_meta = web.get_eater_nyc_restaurants()
+    last_update_date = eater_nyc_restaurants_meta['last_update_date'].date()
+
+    # if the article wasn't published today, don't do anything
+    if (last_update_date != today_date) and (not force):
+        # log run information
+        eater_logger.info('Success: No new NYC restaurants')
+        return 
+
+    # log that we found a new list in case email sending fails
+    eater_logger.info('Success: New NYC restaurants found!')
+    restaurants = eater_nyc_restaurants_meta['parsed_restaurants']
+    
     to = args.recipient_emails
-    assert False
 
     # format eater restaurants to plaintext to 
     # include in our email
