@@ -10,7 +10,12 @@ def schedule_cron():
     user_cron = CronTab(user=settings.PRODUCTION['CRONTAB_USER'])
 
     # create a new cron command to run bin.py
-    command_path = os.path.join(os.path.dirname(__file__), 'run.py')
+    command_path = os.path.join(
+        os.path.dirname(__file__), 
+        'run.py --recipient_emails {}'.format(
+            settings.PRODUCTION['RECIPIENT_EMAILS']
+        )
+    )
     job = cron.new(
         command='python {}'.format(command_path),
     )
