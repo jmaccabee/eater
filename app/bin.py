@@ -1,7 +1,8 @@
 import datetime
 import argparse
 
-from app import mailer, utils, web
+from app import mailer, web
+from app.logger import eater_logger
 
 
 def email_eater_nyc_list_if_new():
@@ -11,10 +12,14 @@ def email_eater_nyc_list_if_new():
     eater_nyc_restaurants_meta = web.get_eater_nyc_restaurants()
     last_update_date = eater_nyc_restaurants_meta['last_update_date'].date()
 
-    # if the article wasn't published today, don't do anything
+    if the article wasn't published today, don't do anything
     if last_update_date != today_date:
-       return 
+        # log run information
+        eater_logger.info('Success: No new NYC restaurants')
+        return 
 
+    # log that we found a new list in case email sending fails
+    eater_logger.info('Success: New NYC restaurants found!')
     restaurants = eater_nyc_restaurants_meta['parsed_restaurants']
     
     # configure expected command line arguments
@@ -29,7 +34,8 @@ def email_eater_nyc_list_if_new():
     )
     args = parser.parse_args()
     to = args.recipient_emails
-    
+    assert False
+
     # format eater restaurants to plaintext to 
     # include in our email
     restaurant_text = utils.format_restaurants_for_email(
@@ -41,6 +47,13 @@ def email_eater_nyc_list_if_new():
         body=restaurant_text,
     )
 
+    # log run information to a file for debugging
+    eater_logger.info('Success: Email sent!')
+
 
 if __name__ == '__main__':
-    email_eater_nyc_list_if_new()
+    try:
+        email_eater_nyc_list_if_new()
+    # catch all exceptions and log
+    except Exception as e:
+        eater_logger.error('Error: run failed.', exc_info=True)
