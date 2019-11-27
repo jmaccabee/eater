@@ -33,17 +33,4 @@ setup(
     ],
     packages=find_packages(where='app'),  # Required
     install_requires=parse_requirements(),  # Optional
-
-    # To provide executable scripts, use entry points in preference to the
-    # "scripts" keyword. Entry points provide cross-platform support and allow
-    # `pip` to create the appropriate form of executable for the target
-    # platform.
-    #
-    # For example, the following would provide a command called `sample` which
-    # executes the function `main` from this package when invoked:
-    entry_points={  # Optional
-        'console_scripts': [
-            'email_eater_nyc_list_if_new=bin:email_eater_nyc_list_if_new',
-        ],
-    },
 )
