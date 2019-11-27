@@ -5,7 +5,6 @@ from app import mailer, utils, web
 
 
 def email_eater_nyc_list_if_new():
-    import pdb; pdb.set_trace()
     today_date = datetime.datetime.today().date()
 
     # run the scraper and check when the Eater list content was last updated
@@ -13,8 +12,8 @@ def email_eater_nyc_list_if_new():
     last_update_date = eater_nyc_restaurants_meta['last_update_date'].date()
 
     # if the article wasn't published today, don't do anything
-    # if last_update_date != today_date:
-    #    return 
+    if last_update_date != today_date:
+       return 
 
     restaurants = eater_nyc_restaurants_meta['parsed_restaurants']
     
@@ -34,9 +33,9 @@ def email_eater_nyc_list_if_new():
     # format eater restaurants to plaintext to 
     # include in our email
     restaurant_text = utils.format_restaurants_for_email(
-        eater_nyc_essential_restaurants
+        restaurants
     )
-    mailer.send_mail(
+    mailer.send_email(
         to=to,
         subject_line='New Eater NYC restaurant list!',
         body=restaurant_text,

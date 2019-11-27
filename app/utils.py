@@ -45,25 +45,38 @@ def format_restaurants_for_email(restaurants):
         "list has been published!\n\n"
     )
     for restaurant in restaurants:
-        restaurant_text += '{}\n'.format(restaurant['name'])
+        # main content
+        restaurant_text += '{}\n\n'.format(restaurant['name'])
         restaurant_text += '{}\n'.format(
             restaurant['restaurant_description']
         )
-        restaurant_text += 'Also featured in: {}\n\n'.format(
-            restaurant['other_featured_lists']
-        )
-        restaurant_text += 'Address: {}\n'.format(
-            restaurant['address']
-        )
-        restaurant_text += 'Phone Number: {}\n'.format(
-            restaurant['phone_number']
-        )
-        restaurant_text += 'Website URL: {}\n'.format(
-            restaurant['website_url']
-        )
-        restaurant_text += 'Google Maps URL: {}\n'.format(
-            restaurant['google_maps_url']
-        )
-        restaurant_text += '\n\n\n'
+        if restaurant['other_featured_lists']:
+            restaurant_text += 'Also featured in: {}\n'.format(
+                restaurant['other_featured_lists']
+            )
+        
+        # add spacer newline
+        restaurant_text += '\n'
+
+        # additional details
+        if restaurant['address']:
+            restaurant_text += 'Address: {}\n'.format(
+                restaurant['address']
+            )
+        if restaurant['phone_number']:
+            restaurant_text += 'Phone Number: {}\n'.format(
+                restaurant['phone_number']
+            )
+        if restaurant['website_url']:
+            restaurant_text += 'Website URL: {}\n'.format(
+                restaurant['website_url']
+            )
+        if restaurant['google_maps_url']:
+            restaurant_text += 'Google Maps URL: {}\n'.format(
+                restaurant['google_maps_url']
+            )
+
+        # add divider between restaurants
+        restaurant_text += '\n-----\n\n'
 
     return restaurant_text
