@@ -1,7 +1,7 @@
 import datetime
 import argparse
 
-from app import mailer, web
+from app import mailer, utils, web
 
 
 def email_eater_nyc_list_if_new():
@@ -29,10 +29,18 @@ def email_eater_nyc_list_if_new():
         required=True
     )
     args = parser.parse_args()
-    args.recipient_emails
-
-    recipients = []
-    mailer.send_mail(eater_nyc_essential_restaurants)
+    to = args.recipient_emails
+    
+    # format eater restaurants to plaintext to 
+    # include in our email
+    restaurant_text = utils.format_restaurants_for_email(
+        eater_nyc_essential_restaurants
+    )
+    mailer.send_mail(
+        to=to,
+        subject_line='New Eater NYC restaurant list!',
+        body=restaurant_text,
+    )
 
 
 if __name__ == '__main__':

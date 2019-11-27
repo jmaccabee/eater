@@ -4,13 +4,10 @@ import json
 from app import constants, utils
 
 
-def parse_eater_restaurants(dom, requested_url_path):
+def parse_eater_restaurants(dom):
     # start by parsing what we can from the linked data
     # included in a <script> tag on the page
-    linked_data = parse_eater_restaurant_linked_json_data(
-        dom,
-        requested_url_path,
-    )
+    linked_data = parse_eater_restaurant_linked_json_data(dom)
     
     # unpack the parsed linked data so we can 
     # add parsed restaurant data not found 
@@ -33,7 +30,7 @@ def parse_eater_restaurants(dom, requested_url_path):
     }
 
 
-def parse_eater_restaurant_linked_json_data(dom, requested_url_path):
+def parse_eater_restaurant_linked_json_data(dom):
     # first, extract the element containing the linked data
     restaurant_json = ''.join(
         dom.xpath(
@@ -67,7 +64,6 @@ def parse_eater_restaurant_linked_json_data(dom, requested_url_path):
             'list_position': restaurant['position'],
             'eater_url': restaurant['item']['url'],
             'name': restaurant['item']['name'],        
-            'requested_url_path': requested_url_path,
         }
 
     # I prefer the pattern of returning a 

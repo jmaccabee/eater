@@ -1,4 +1,3 @@
-from urllib.parse import urlparse
 import requests
 
 from app import utils, parse
@@ -34,10 +33,4 @@ def get_eater_nyc_restaurants():
         response.content
     )
 
-    # so we know which URL was requested
-    requested_url_path = urlparse(target_url).path
-
-    return parse.parse_eater_restaurants(
-        dom,
-        requested_url_path,
-    )
+    return parse.parse_eater_restaurants(dom)

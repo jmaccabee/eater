@@ -37,3 +37,33 @@ def clean_xpath_parsed_text(xpath_result_list, join_separator=' '):
     clean_text = clean_text.strip()
 
     return clean_text
+
+
+def format_restaurants_for_email(restaurants):
+    restaurant_text = (
+        "A new Eater NYC Essential Restaurants "
+        "list has been published!\n\n"
+    )
+    for restaurant in restaurants:
+        restaurant_text += '{}\n'.format(restaurant['name'])
+        restaurant_text += '{}\n'.format(
+            restaurant['restaurant_description']
+        )
+        restaurant_text += 'Also featured in: {}\n\n'.format(
+            restaurant['other_featured_lists']
+        )
+        restaurant_text += 'Address: {}\n'.format(
+            restaurant['address']
+        )
+        restaurant_text += 'Phone Number: {}\n'.format(
+            restaurant['phone_number']
+        )
+        restaurant_text += 'Website URL: {}\n'.format(
+            restaurant['website_url']
+        )
+        restaurant_text += 'Google Maps URL: {}\n'.format(
+            restaurant['google_maps_url']
+        )
+        restaurant_text += '\n\n\n'
+
+    return restaurant_text
