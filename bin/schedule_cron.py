@@ -2,7 +2,7 @@ from crontab import CronTab
 
 import os
 
-from '../app' import settings
+from app import settings
 
 
 def schedule_cron():
