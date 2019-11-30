@@ -132,3 +132,4 @@ dmypy.json
 # ADDITIONAL #
 ##############
 eater_app.log
+.eaterrc
