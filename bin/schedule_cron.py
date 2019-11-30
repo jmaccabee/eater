@@ -22,6 +22,7 @@ def schedule_cron():
 
     # set the job to run at noon each day
     job.hour.on(12)
+    job.minute.on(0)
 
     user_cron.write()
 
