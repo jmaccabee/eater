@@ -11,7 +11,7 @@ def schedule_cron():
 
     # create a new cron command to run bin.py
     command_path = os.path.join(
-        os.path.dirname(__file__), 
+        os.path.dirname(os.path.realpath(__file__)),
         'run.py --recipient_emails {}'.format(
             settings.PRODUCTION['RECIPIENT_EMAILS']
         )
