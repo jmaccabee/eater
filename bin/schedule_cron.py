@@ -17,6 +17,8 @@ def schedule_cron():
         )
     )
     job = user_cron.new(
+        # if you're running the app from a virtual environment,
+        # you'll want to use the virtualenv's python here instead
         command='python {}'.format(command_path),
     )
 
