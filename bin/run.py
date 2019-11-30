@@ -1,5 +1,7 @@
-import datetime
 import argparse
+import datetime
+
+from dateutil.tz import UTC
 
 from app import mailer, utils, web
 from app.logger import eater_logger
@@ -9,14 +11,19 @@ def email_eater_nyc_list_if_new(recipient_emails, force):
     if force:
         eater_logger.info('Forcing run.')
 
-    today_date = datetime.datetime.today().date()
+    now = datetime.datetime.now()
+    # now needs to be timezone aware
+    now = now.replace(tzinfo=UTC)
 
     # run the scraper and check when the Eater list content was last updated
     eater_nyc_restaurants_meta = web.get_eater_nyc_restaurants()
-    last_update_date = eater_nyc_restaurants_meta['last_update_date'].date()
+    last_update_time = eater_nyc_restaurants_meta['last_update_date']
 
+    updated_within_last_day = (
+        (now - last_update_time) < datetime.timedelta(hours=24)
+    )
     # if the article wasn't published today, don't do anything
-    if (last_update_date != today_date) and (not force):
+    if (not updated_within_last_day) and (not force):
         # log run information
         eater_logger.info('Success: No new NYC restaurants')
         return 
