@@ -2,7 +2,7 @@ from crontab import CronTab
 
 import os
 
-from app import settings
+from '../app' import settings
 
 
 def schedule_cron():
@@ -16,14 +16,14 @@ def schedule_cron():
             settings.PRODUCTION['RECIPIENT_EMAILS']
         )
     )
-    job = cron.new(
+    job = user_cron.new(
         command='python {}'.format(command_path),
     )
 
     # set the job to run at noon each day
     job.hour.on(12)
 
-    cron.write()
+    user_cron.write()
 
 
 if __name__ == '__main__':
