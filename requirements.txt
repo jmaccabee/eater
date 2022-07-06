@@ -1,4 +1,4 @@
 boto3==1.10.28
-lxml==4.4.2
+lxml==4.9.1
 python-crontab==2.4.0
 requests==2.22.0
